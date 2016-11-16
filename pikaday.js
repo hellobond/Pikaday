@@ -262,7 +262,10 @@
         onSelect: null,
         onOpen: null,
         onClose: null,
-        onDraw: null
+        onDraw: null,
+
+        //custom
+        cycle: false,
     },
 
 
@@ -396,10 +399,10 @@
         }
 
         if (c === 0) {
-            html += '<button class="pika-prev' + (prev ? '' : ' is-disabled') + '" type="button">' + opts.i18n.previousMonth + '</button>';
+            html += '<button class="pika-prev' + (prev ? '' : opts.cycle ? ' pika-cycle-prev' : ' is-disabled') + '" type="button">' + opts.i18n.previousMonth + '</button>';
         }
         if (c === (instance._o.numberOfMonths - 1) ) {
-            html += '<button class="pika-next' + (next ? '' : ' is-disabled') + '" type="button">' + opts.i18n.nextMonth + '</button>';
+            html += '<button class="pika-next' + (next ? '' : opts.cycle ? ' pika-cycle-next' : ' is-disabled') + '" type="button">' + opts.i18n.nextMonth + '</button>';
         }
 
         return html += '</div>';
@@ -863,12 +866,26 @@
         nextMonth: function()
         {
             this.calendars[0].month++;
+
+            if (this._o.cycle) {
+                if (this.calendars[0].month >= 12) {
+                    this.calendars[0].month = 0;
+                }
+            }
+
             this.adjustCalendars();
         },
 
         prevMonth: function()
         {
             this.calendars[0].month--;
+
+            if (this._o.cycle) {
+                if (this.calendars[0].month <= 0) {
+                    this.calendars[0].month = 11;
+                }
+            }
+
             this.adjustCalendars();
         },
 
@@ -981,7 +998,7 @@
             if (typeof this._o.onDraw === 'function') {
                 this._o.onDraw(this);
             }
-            
+
             if (opts.bound) {
                 // let the screen reader user know to use arrow keys
                 opts.field.setAttribute('aria-label', 'Use the arrow keys to pick a date');
