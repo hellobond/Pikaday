@@ -868,7 +868,7 @@
             this.calendars[0].month++;
 
             if (this._o.cycle) {
-                if (this.calendars[0].month >= 12) {
+                if (this.calendars[0].month > 11) {
                     this.calendars[0].month = 0;
                 }
             }
@@ -881,7 +881,7 @@
             this.calendars[0].month--;
 
             if (this._o.cycle) {
-                if (this.calendars[0].month <= 0) {
+                if (this.calendars[0].month < 0) {
                     this.calendars[0].month = 11;
                 }
             }
